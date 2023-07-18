@@ -24,6 +24,17 @@ namespace MauiApp1.Models
 
         public void Delete() => File.Delete(Path.Combine(FileSystem.AppDataDirectory, Filename));
 
+        public static IEnumerable<Note> Search(string searchKeyword)
+        {
+            string appDataPath = FileSystem.AppDataDirectory;
+
+            return Directory
+                .EnumerateFiles(appDataPath, "*.notes.txt")
+                .Select(filename => Note.Load(Path.GetFileName(filename)))
+                .Where(note => note.Text.Contains(searchKeyword, StringComparison.OrdinalIgnoreCase))
+                .OrderByDescending(note => note.Date);
+        }
+
         public static Note Load(string filename)
         {
             filename = Path.Combine(FileSystem.AppDataDirectory, filename);

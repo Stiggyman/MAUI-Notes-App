@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:MauiApp1.ViewModels"
+             x:Class="MauiApp1.Views.SearchPage"
+             Title="SearchPage">
+    <ContentPage.BindingContext>
+        <viewModels:SearchViewModel />
+    </ContentPage.BindingContext>
+    <StackLayout>
+        <Entry x:Name="SearchEntry"
+            Placeholder="Search notes..."
+            Text="{Binding SearchKeyword, Mode=TwoWay}" />
+
+        <Button Text="Update Search Results" Command="{Binding UpdateSearchResultsCommand}"/>
+        <CollectionView x:Name="notesCollection"
+                ItemsSource="{Binding Notes}"
+                Margin="20"
+                SelectionMode="Single"
+                SelectedItem="{Binding SelectNoteCommand}">
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout>
+                        <Label Text="{Binding Text}" FontSize="22"/>
+                        <Label Text="{Binding Date}" FontSize="14" TextColor="Silver"/>
+                        <Button Text="Open" Command="{Binding BindingContext.OpenNoteCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}" CommandParameter="{Binding .}" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>
